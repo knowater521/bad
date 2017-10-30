@@ -2,8 +2,29 @@
 import os
 import sys
 
+
+def create_log_dir():
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    log_dir = os.path.join(BASE_DIR, "logs")
+    if not os.path.exists(log_dir):
+        os.mkdir(log_dir)
+
+
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
+
+    create_log_dir()
+
+    if os.environ.get("settings") == "test":
+        os.environ.setdefault(
+            "DJANGO_SETTINGS_MODULE",
+            "settings.settings_test")
+    elif os.environ.get("settings") == "pro":
+        os.environ.setdefault(
+            "DJANGO_SETTINGS_MODULE",
+            "settings.settings_pro")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
